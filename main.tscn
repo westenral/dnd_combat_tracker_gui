@@ -1,0 +1,104 @@
+[gd_scene load_steps=4 format=3 uid="uid://ci3jmmv8kunv"]
+
+[ext_resource type="Script" path="res://file.gd" id="1_0o553"]
+[ext_resource type="Script" path="res://dudes.gd" id="1_ibdmi"]
+
+[sub_resource type="Theme" id="Theme_46wvn"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 1
+theme = SubResource("Theme_46wvn")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+initial_position = 2
+size = Vector2i(400, 600)
+min_size = Vector2i(400, 600)
+access = 1
+root_subfolder = "encounters"
+filters = PackedStringArray("*.txt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 66.0
+grow_horizontal = 2
+
+[node name="file" type="HBoxContainer" parent="VBoxContainer" node_paths=PackedStringArray("dudes", "dialog")]
+layout_mode = 2
+script = ExtResource("1_0o553")
+dudes = NodePath("../dudes")
+dialog = NodePath("../../FileDialog")
+
+[node name="jesus" type="Button" parent="VBoxContainer/file"]
+layout_mode = 2
+text = "save"
+
+[node name="not jesus??" type="Button" parent="VBoxContainer/file"]
+layout_mode = 2
+text = "load"
+
+[node name="roadtogalilee" type="Label" parent="VBoxContainer/file"]
+layout_mode = 2
+
+[node name="menu" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="labels" type="HBoxContainer" parent="VBoxContainer/menu"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Init" type="Label" parent="VBoxContainer/menu/labels"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "init"
+
+[node name="sort" type="Button" parent="VBoxContainer/menu/labels"]
+layout_mode = 2
+text = "v"
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/menu/labels"]
+layout_mode = 2
+
+[node name="name" type="Label" parent="VBoxContainer/menu/labels"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "name"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/menu/labels"]
+layout_mode = 2
+
+[node name="health" type="Label" parent="VBoxContainer/menu/labels"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "health, max health"
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/menu"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="basinga" type="Button" parent="VBoxContainer/menu"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "+"
+
+[node name="dudes" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("1_ibdmi")
+
+[connection signal="file_selected" from="FileDialog" to="VBoxContainer/file" method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="VBoxContainer/file/jesus" to="VBoxContainer/file" method="_on_jesus_pressed"]
+[connection signal="pressed" from="VBoxContainer/file/not jesus??" to="VBoxContainer/file" method="_on_not_jesus_pressed"]
+[connection signal="pressed" from="VBoxContainer/menu/labels/sort" to="VBoxContainer/dudes" method="_on_sort_pressed"]
+[connection signal="pressed" from="VBoxContainer/menu/basinga" to="VBoxContainer/dudes" method="_on_basinga_pressed"]

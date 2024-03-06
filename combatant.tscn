@@ -1,0 +1,75 @@
+[gd_scene load_steps=7 format=3 uid="uid://ci8ebrr2mp8o4"]
+
+[ext_resource type="Script" path="res://combatant.gd" id="1_8p1mq"]
+[ext_resource type="Script" path="res://health.gd" id="2_xt34j"]
+[ext_resource type="Script" path="res://health_progress.gd" id="3_uecq1"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_54vhk"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_cslla"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_4nd5a"]
+
+[node name="Combatant" type="HBoxContainer"]
+offset_right = 209.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+script = ExtResource("1_8p1mq")
+
+[node name="Init" type="SpinBox" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_icons/updown = SubResource("ImageTexture_54vhk")
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="VSeparator2" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="name" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "name"
+caret_blink = true
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="health" type="SpinBox" parent="." node_paths=PackedStringArray("max_health")]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_icons/updown = SubResource("ImageTexture_cslla")
+max_value = 1.0
+allow_greater = true
+allow_lesser = true
+script = ExtResource("2_xt34j")
+max_health = NodePath("../SpinBox")
+
+[node name="health_progress" type="ProgressBar" parent="health" node_paths=PackedStringArray("watch")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+value = 24.07
+allow_lesser = true
+fill_mode = 1
+show_percentage = false
+script = ExtResource("3_uecq1")
+watch = NodePath("..")
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+theme_override_icons/updown = SubResource("ImageTexture_4nd5a")
+allow_greater = true
+allow_lesser = true
+alignment = 2
+select_all_on_focus = true
+
+[connection signal="changed" from="health" to="health/health_progress" method="_on_health_changed"]
+[connection signal="value_changed" from="health" to="health/health_progress" method="_on_health_changed"]
+[connection signal="value_changed" from="SpinBox" to="health" method="_on_spin_box_value_changed"]
